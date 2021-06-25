@@ -6,6 +6,7 @@ import { RoomCode } from '../components/RoomCode'
 import { Question } from '../components/Question'
 
 import { useAuth } from '../hooks/useAuth'
+import { useRoom } from '../hooks/useRoom'
 
 import { database } from '../services/firebase'
 
@@ -13,67 +14,23 @@ import logoImg from '../assets/images/logo.svg'
 
 import '../styles/room.scss'
 
-type FirebaseQuestions = Record<string, {
-  author: {
-    name: string
-    avatar: string
-  }
-  content: string
-  isAnswered: boolean
-  isHighlighted: boolean
-}>
-
-type QuestionType = {
-  id: string
-  author: {
-    name: string
-    avatar: string
-  }
-  content: string
-  isAnswered: boolean
-  isHighlighted: boolean
-}
-
 type RoomParams = {
   id: string
 }
 
 export function Room() {
-  const { user } = useAuth()
-  // pegando os parâmetros que são repassados na rota
   const params = useParams<RoomParams>()
-  const [newQuestion, setNewQuestion] = useState('')
-  const [questions, setQuestions] = useState<QuestionType[]>([])
-  const [title, setTitle] = useState('')
+  const { user } = useAuth()
 
   // pegando o id da rota, que está vindo na rota
   const roomId = params.id
 
-  useEffect(() => {
-    const roomRef = database.ref(`rooms/${roomId}`)
+  // quando uma lógica é compartilhada em mais
+  // de um componente, podemos criar um hook
+  const { questions, title } = useRoom(roomId)
 
-    // buscando os registros da base de dados
-    roomRef.on('value', room => {
-      const databaseRoom = room.val()
-      // repassando o valor de questions retornado da base
-      // para uma constante que possui a tipagem "FirebaseQuestions"
-      const FirebaseQuestions: FirebaseQuestions = databaseRoom.questions ?? {}
-
-      // com o entries, convertemos um Object em Array.
-      const parsedQuestions = Object.entries(FirebaseQuestions).map(([key, value]) => {
-        return {
-          id: key,
-          content: value.content,
-          author: value.author,
-          isHighlighted: value.isHighlighted,
-          isAnswered: value.isAnswered
-        }
-      })
-
-      setTitle(databaseRoom.title)
-      setQuestions(parsedQuestions)
-    })
-  }, [roomId])
+  // pegando os parâmetros que são repassados na rota
+  const [newQuestion, setNewQuestion] = useState('')
 
   async function handleSendQuestion(event: FormEvent) {
     event.preventDefault()
