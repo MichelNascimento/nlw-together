@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom'
 
 import { Button } from '../components/Button'
 import { RoomCode } from '../components/RoomCode'
+import { Question } from '../components/Question'
 
 import { useAuth } from '../hooks/useAuth'
 
@@ -22,7 +23,8 @@ type FirebaseQuestions = Record<string, {
   isHighlighted: boolean
 }>
 
-type Questions = {
+type QuestionType = {
+  id: string
   author: {
     name: string
     avatar: string
@@ -41,7 +43,7 @@ export function Room() {
   // pegando os parâmetros que são repassados na rota
   const params = useParams<RoomParams>()
   const [newQuestion, setNewQuestion] = useState('')
-  const [questions, setQuestions] = useState<Questions[]>([])
+  const [questions, setQuestions] = useState<QuestionType[]>([])
   const [title, setTitle] = useState('')
 
   // pegando o id da rota, que está vindo na rota
@@ -115,7 +117,7 @@ export function Room() {
       <main>
         <div className="room-title">
           <h1>sala {title}</h1>
-          { questions.length > 0 && <span>{questions.length} pergunta(s)</span> }
+          {questions.length > 0 && <span>{questions.length} pergunta(s)</span>}
         </div>
 
         <form onSubmit={handleSendQuestion}>
@@ -137,6 +139,18 @@ export function Room() {
             <Button type="submit" disabled={!user}>Enviar pergunta</Button>
           </div>
         </form>
+
+        <div className="question-list">
+          {questions.map(question => {
+            return (
+              <Question
+                key={question.id}
+                content={question.content}
+                author={question.author}
+              />
+            )
+          })}
+        </div>
       </main>
     </div >
   )
