@@ -1,6 +1,6 @@
 import { ButtonHTMLAttributes } from 'react'
 
-import '../styles/button.scss'
+import './styles.scss'
 
 // utilizando o "ButtonHTMLAttributes" do React na tipagem 
 // para podermos utilizar todos os atributos que um 

@@ -1,19 +1,19 @@
 import { useParams, useHistory } from 'react-router-dom'
 
-import { Button } from '../components/Button'
-import { RoomCode } from '../components/RoomCode'
-import { Question } from '../components/Question'
+import { Button } from '../../components/Button'
+import { RoomCode } from '../../components/RoomCode'
+import { Question } from '../../components/Question'
 
-import { useRoom } from '../hooks/useRoom'
+import { useRoom } from '../../hooks/useRoom'
 
-import { database } from '../services/firebase'
+import { database } from '../../services/firebase'
 
-import logoImg from '../assets/images/logo.svg'
-import deleteImg from '../assets/images/delete.svg'
-import checkImg from '../assets/images/check.svg'
-import answerImg from '../assets/images/answer.svg'
+import logoImg from '../../assets/images/logo.svg'
+import deleteImg from '../../assets/images/delete.svg'
+import checkImg from '../../assets/images/check.svg'
+import answerImg from '../../assets/images/answer.svg'
 
-import '../styles/room.scss'
+import './styles.scss'
 
 type RoomParams = {
   id: string
@@ -23,7 +23,7 @@ export function AdminRoom() {
   const history = useHistory()
   const params = useParams<RoomParams>()
 
-  // pegando o id da rota, que está vindo na rota
+  // pegando o id da sala, que está vindo na rota
   const roomId = params.id
 
   // quando uma lógica é compartilhada em mais

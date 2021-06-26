@@ -41,7 +41,7 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
       }
     })
 
-    // "desligando" o eventListener para que
+    // "se desescrevendo" do eventListener para que
     // ele não continue executando (boa prática)
     return () => {
       unsubscribe()
