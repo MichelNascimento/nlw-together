@@ -32,3 +32,9 @@ $ yarn install (or npm install)
 $ yarn start (or npm start)
 
 ```
+
+## ✨ Plus
+
+#### As a plus of the application, I made a PWA version, in which the user can install Letmeask on their device:
+
+<img src="src\assets\images\letmeask-pwa.gif" />
