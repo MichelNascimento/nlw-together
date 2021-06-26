@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom'
+import { useParams, useHistory } from 'react-router-dom'
 
 import { Button } from '../components/Button'
 import { RoomCode } from '../components/RoomCode'
@@ -18,6 +18,7 @@ type RoomParams = {
 }
 
 export function AdminRoom() {
+  const history = useHistory()
   const params = useParams<RoomParams>()
 
   // pegando o id da rota, que está vindo na rota
@@ -26,6 +27,14 @@ export function AdminRoom() {
   // quando uma lógica é compartilhada em mais
   // de um componente, podemos criar um hook
   const { questions, title } = useRoom(roomId)
+
+  async function handleEndRoom() {
+    await database.ref(`rooms/${roomId}`).update({
+      endedAt: new Date()
+    })
+
+    history.push('/')
+  }
 
   async function handleDeleteQuestion(questionId: string) {
     if (window.confirm('Tem certeza que você deseja excluir esta pergunta?')) {
@@ -40,7 +49,7 @@ export function AdminRoom() {
           <img src={logoImg} alt="Letmeask" />
           <div>
             <RoomCode code={params.id} />
-            <Button isOutlined>Encerrar sala</Button>
+            <Button isOutlined onClick={handleEndRoom}>Encerrar sala</Button>
           </div>
         </div>
       </header>
